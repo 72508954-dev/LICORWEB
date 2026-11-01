@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Penca | Licorería</title>
+    <!-- Tailwind CSS para el diseño rápido y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuración de colores personalizados (Blanco y Negro medio claro) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'black-light': '#2A2A2A', /* Negro medio claro */
+                        'black-lighter': '#3D3D3D',
+                        'white-off': '#F9F9F9'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'serif': ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@600;700&display=swap');
+        
+        body {
+            background-color: #F9F9F9;
+            color: #2A2A2A;
+            scroll-behavior: smooth;
+        }
+
+        /* Estilo para las imágenes de productos al pasar el ratón */
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        
+        .product-image {
+            transition: transform 0.3s ease;
+        }
+
+        /* Estilos del modal de notificación (reemplazo de alert) */
+        #notification {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+        #notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased font-sans">
+
+    <!-- Navegación -->
+    <nav class="bg-black-light text-white fixed w-full z-50 top-0 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <!-- REEMPLAZA LA URL DE 'src' POR LA RUTA DE TU LOGO -->
+                    <img id="logo-imagen" class="h-12 w-auto rounded bg-white p-1" src="https://placehold.co/150x50/ffffff/2a2a2a?text=LA+PENCA" alt="Logo La Penca">
+                </div>
+                
+                <!-- Enlaces de Escritorio -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#inicio" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Inicio</a>
+                    <a href="#productos" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Productos</a>
+                    <a href="#contacto" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Contactar</a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none">
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil Desplegable -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black-lighter pb-4 pt-2">
+            <a href="#inicio" class="block px-4 py-2 text-gray-300 hover:bg-black-light hover:text-white">Inicio</a>
+            <a href="#productos" class="block px-4 py-2 text-gray-300 hover:bg-black-light hover:text-white">Productos</a>
+            <a href="#contacto" class="block px-4 py-2 text-gray-300 hover:bg-black-light hover:text-white">Contactar</a>
+        </div>
+    </nav>
+
+    <!-- Sección Inicio -->
+    <section id="inicio" class="pt-20 min-h-screen flex items-center justify-center bg-black-light relative overflow-hidden">
+        <!-- Patrón decorativo de fondo -->
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+        
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-serif font-bold text-white mb-6 tracking-tight">
+                La Penca <br><span class="text-3xl md:text-5xl font-light italic">Licorería Premium</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+                Encuentra los mejores licores puros y vinos seleccionados para celebrar esos momentos inolvidables. Calidad, exclusividad y el mejor precio en un solo lugar.
+            </p>
+            <a href="#productos" class="inline-block bg-white text-black-light font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-200 transition transform hover:-translate-y-1">
+                Ver Catálogo
+            </a>
+        </div>
+    </section>
+
+    <!-- Sección Productos -->
+    <section id="productos" class="py-20 bg-white-off">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif font-bold text-black-light mb-4">Nuestros Productos</h2>
+                <div class="w-24 h-1 bg-black-light mx-auto"></div>
+                <p class="mt-4 text-gray-600">Selección especial de licores a los mejores precios.</p>
+            </div>
+
+            <!-- Cuadrícula de Productos -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                
+                <!-- Producto 1: Johnnie Walker -->
+                <div class="product-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 flex flex-col h-full">
+                    <div class="h-64 overflow-hidden bg-gray-100 flex justify-center items-center p-4">
+                        <img src="https://placehold.co/300x400/2A2A2A/FFFFFF?text=Johnnie+Walker\nRed+Label" alt="Johnnie Walker Red Label" class="product-image max-h-full object-contain">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-black-light mb-2 font-serif">Johnnie Walker Red Label</h3>
+                        <p class="text-sm text-gray-500 mb-4 flex-grow">Whisky escocés clásico, vibrante y versátil. 750ml.</p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <span class="text-2xl font-bold text-black-light">S/ 55.00</span>
+                            <button onclick="addToCart('Johnnie Walker Red Label')" class="bg-black-light text-white px-4 py-2 rounded hover:bg-black-lighter transition">
+                                Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 2: Jack Daniel's -->
+                <div class="product-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 flex flex-col h-full">
+                    <div class="h-64 overflow-hidden bg-gray-100 flex justify-center items-center p-4">
+                        <img src="https://placehold.co/300x400/2A2A2A/FFFFFF?text=Jack+Daniel's\nOld+No.+7" alt="Jack Daniel's Old No. 7" class="product-image max-h-full object-contain">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-black-light mb-2 font-serif">Jack Daniel's Old No. 7</h3>
+                        <p class="text-sm text-gray-500 mb-4 flex-grow">El icónico Tennessee Whiskey filtrado en carbón. 750ml.</p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <span class="text-2xl font-bold text-black-light">S/ 85.00</span>
+                            <button onclick="addToCart('Jack Daniel\'s Old No. 7')" class="bg-black-light text-white px-4 py-2 rounded hover:bg-black-lighter transition">
+                                Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 3: Smirnoff -->
+                <div class="product-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 flex flex-col h-full">
+                    <div class="h-64 overflow-hidden bg-gray-100 flex justify-center items-center p-4">
+                        <img src="https://placehold.co/300x400/2A2A2A/FFFFFF?text=Vodka\nSmirnoff" alt="Vodka Smirnoff" class="product-image max-h-full object-contain">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-black-light mb-2 font-serif">Vodka Smirnoff No. 21</h3>
+                        <p class="text-sm text-gray-500 mb-4 flex-grow">El vodka más premiado del mundo, triple destilación. 700ml.</p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <span class="text-2xl font-bold text-black-light">S/ 35.00</span>
+                            <button onclick="addToCart('Vodka Smirnoff No. 21')" class="bg-black-light text-white px-4 py-2 rounded hover:bg-black-lighter transition">
+                                Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 4: Flor de Caña -->
+                <div class="product-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 flex flex-col h-full">
+                    <div class="h-64 overflow-hidden bg-gray-100 flex justify-center items-center p-4">
+                        <img src="https://placehold.co/300x400/2A2A2A/FFFFFF?text=Flor+de+Caña\n4+Años" alt="Ron Flor de Caña 4 Años" class="product-image max-h-full object-contain">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-black-light mb-2 font-serif">Ron Flor de Caña 4 Años</h3>
+                        <p class="text-sm text-gray-500 mb-4 flex-grow">Ron añejo premium nicaragüense, ideal para mezclar. 750ml.</p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <span class="text-2xl font-bold text-black-light">S/ 40.00</span>
+                            <button onclick="addToCart('Ron Flor de Caña 4 Años')" class="bg-black-light text-white px-4 py-2 rounded hover:bg-black-lighter transition">
+                                Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 5: Cartavio -->
+                <div class="product-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 flex flex-col h-full">
+                    <div class="h-64 overflow-hidden bg-gray-100 flex justify-center items-center p-4">
+                        <img src="https://placehold.co/300x400/2A2A2A/FFFFFF?text=Ron+Cartavio\nBlack" alt="Ron Cartavio Black" class="product-image max-h-full object-contain">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-black-light mb-2 font-serif">Ron Cartavio Black</h3>
+                        <p class="text-sm text-gray-500 mb-4 flex-grow">Ron peruano oscuro, con notas intensas y cuerpo robusto. 750ml.</p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <span class="text-2xl font-bold text-black-light">S/ 30.00</span>
+                            <button onclick="addToCart('Ron Cartavio Black')" class="bg-black-light text-white px-4 py-2 rounded hover:bg-black-lighter transition">
+                                Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 6: Vino Casillero del Diablo -->
+                <div class="product-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 flex flex-col h-full">
+                    <div class="h-64 overflow-hidden bg-gray-100 flex justify-center items-center p-4">
+                        <img src="https://placehold.co/300x400/2A2A2A/FFFFFF?text=Casillero\ndel+Diablo" alt="Vino Casillero del Diablo" class="product-image max-h-full object-contain">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-black-light mb-2 font-serif">Vino Casillero del Diablo</h3>
+                        <p class="text-sm text-gray-500 mb-4 flex-grow">Cabernet Sauvignon, vino tinto chileno de fama mundial. 750ml.</p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <span class="text-2xl font-bold text-black-light">S/ 35.00</span>
+                            <button onclick="addToCart('Vino Casillero del Diablo')" class="bg-black-light text-white px-4 py-2 rounded hover:bg-black-lighter transition">
+                                Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Contactar -->
+    <section id="contacto" class="py-20 bg-black-light text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Información -->
+                <div>
+                    <h2 class="text-4xl font-serif font-bold mb-6">Contactar a La Penca</h2>
+                    <p class="text-gray-300 mb-8">¿Tienes alguna duda, un pedido grande para un evento o necesitas información sobre disponibilidad? Escríbenos y te responderemos de inmediato.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span>Av. Principal 1234, Lima, Perú</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            <span>+51 987 654 321</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            <span>ventas@lapenca.pe</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario -->
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <form id="contact-form" class="space-y-6 text-black-light">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Nombre completo</label>
+                            <input type="text" id="name" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-black-light focus:border-black-light outline-none transition">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+                            <input type="email" id="email" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-black-light focus:border-black-light outline-none transition">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700">Mensaje</label>
+                            <textarea id="message" rows="4" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-black-light focus:border-black-light outline-none transition"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-black-light text-white font-bold py-3 px-4 rounded hover:bg-black-lighter transition shadow-md">
+                            Enviar Mensaje
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black-lighter text-gray-400 py-8 border-t border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h3 class="text-xl font-serif text-white mb-2">La Penca</h3>
+            <p class="text-sm mb-4">La mejor licorería en línea. Tomar bebidas alcohólicas en exceso es dañino.</p>
+            <p class="text-xs">&copy; 2026 Licorería La Penca. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Contenedor de Notificaciones (Reemplaza los alerts) -->
+    <div id="notification" class="fixed bottom-5 right-5 bg-white text-black-light border-l-4 border-black-light p-4 rounded shadow-2xl z-50 flex items-center max-w-sm">
+        <svg class="w-6 h-6 mr-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span id="notification-text" class="font-medium"></span>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Funcionalidad para el menú móvil
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Cerrar menú móvil al hacer clic en un enlace
+        const mobileLinks = menu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Función para mostrar notificaciones estilo Toast (en lugar de usar alert())
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const notifText = document.getElementById('notification-text');
+            
+            notifText.innerText = message;
+            notification.classList.add('show');
+            
+            // Ocultar después de 3 segundos
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Función para añadir al carrito
+        function addToCart(productName) {
+            showNotification(`¡Se añadió "${productName}" al carrito de compras!`);
+        }
+
+        // Manejo del formulario de contacto
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Evita que la página se recargue
+            
+            // Obtener el nombre para un mensaje más personalizado
+            const name = document.getElementById('name').value;
+            
+            // Mostrar notificación de éxito
+            showNotification(`¡Gracias ${name}! Tu mensaje ha sido enviado correctamente.`);
+            
+            // Limpiar formulario
+            contactForm.reset();
+        });
+    </script>
+</body>
+</html>
